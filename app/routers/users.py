@@ -8,12 +8,10 @@ router = APIRouter()
 def get_users():
     return users_db
 
-
 @router.post("/users")
 def create_user(user: User):
     users_db.append(user)
     return user
-
 
 @router.get("/users/{user_id}")
 def get_user(user_id: int):
