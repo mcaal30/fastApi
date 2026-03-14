@@ -20,7 +20,6 @@ def get_user(user_id: int):
             return user
     return {"error": "User not found"}
 
-
 @router.delete("/users/{user_id}")
 def delete_user(user_id: int):
     for user in users_db:
@@ -29,13 +28,4 @@ def delete_user(user_id: int):
             return {"message": "User deleted"}
     return {"error": "User not found"}
 
-@router.put("/users/{user_id}")
-def put_user(user_id: int, name_user: str):
-    for user in users_db:
-        if user.id == user_id:
-            user.name = name_user   # ← aquí está la corrección importante
-            return {
-                "message": "User updated",
-                "data": user
-            }
-    return {"error": "User not found"}
+
