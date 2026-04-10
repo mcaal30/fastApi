@@ -2,9 +2,8 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-# URL de conexión (Dialecto MySQL + Driver PyMySQL)
-# Formato: mysql+pymysql://usuario:contraseña@servidor/base_de_datos
-SQLALCHEMY_DATABASE_URL = "mysql+pymysql://root:1234@localhost/User"
+# URL de conexión postgresql
+SQLALCHEMY_DATABASE_URL = "postgresql://postgres@localhost/User"
 
 # 1. El Engine es el motor que maneja la comunicación con la base de datos
 engine = create_engine(SQLALCHEMY_DATABASE_URL, pool_size=5, max_overflow=10)

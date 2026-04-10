@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 from datetime import datetime
 from typing import Optional
 
@@ -17,3 +17,8 @@ class UserResponse(UserBase):
     created_at: Optional[datetime] = None
     update_at: Optional[datetime] = None
 
+#4. Esquema para actualizar: Campos opcionales para actualizar
+class UserUpdate(BaseModel):
+    name: Optional[str] = None
+    email: Optional[str] = None
+    password: Optional[str] = None
