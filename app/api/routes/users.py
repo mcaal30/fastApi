@@ -74,3 +74,5 @@ def delete_user(user_id: int, db: Session = Depends(get_db)):
     db.delete(usuario)
     db.commit()
     return {"message": "Usuario eliminado exitosamente"}
+
+#mejoras
