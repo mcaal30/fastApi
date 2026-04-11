@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 import hashlib
 
 from app.db.database import get_db
-from app.schemas.user import UserCreate, UserResponse
+from app.schemas.user import UserCreate, UserResponse, UserUpdate
 from app.models.user import User # Importamos el modelo ORM
 
 router = APIRouter()
@@ -38,3 +38,41 @@ def get_users(db: Session = Depends(get_db)):
     # Trae todos los usuarios de la base de datos
     usuarios = db.query(User).all()
     return usuarios
+
+@router.put("/{user_id}", response_model=UserResponse)
+def update_user(user_id: int, user_update: UserUpdate, db: Session = Depends(get_db)):
+    # Buscar el usuario por ID
+    usuario = db.query(User).filter(User.id == user_id).first()
+    if not usuario:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    
+    # Actualizar campos si se proporcionan
+    if user_update.name is not None:
+        usuario.name = user_update.name
+    if user_update.email is not None:
+        # Verificar si el email ya existe en otro usuario
+        email_existente = db.query(User).filter(User.email == user_update.email, User.id != user_id).first()
+        if email_existente:
+            raise HTTPException(status_code=400, detail="El email ya está registrado por otro usuario")
+        usuario.email = user_update.email
+    if user_update.password is not None:
+        usuario.password = hashlib.sha256(user_update.password.encode()).hexdigest()
+    
+    # Guardar cambios
+    db.commit()
+    db.refresh(usuario)
+    return usuario
+
+@router.delete("/{user_id}")
+def delete_user(user_id: int, db: Session = Depends(get_db)):
+    # Buscar el usuario por ID
+    usuario = db.query(User).filter(User.id == user_id).first()
+    if not usuario:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    
+    # Eliminar el usuario
+    db.delete(usuario)
+    db.commit()
+    return {"message": "Usuario eliminado exitosamente"}
+
+#mejoras
