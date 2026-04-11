@@ -3,7 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
 # URL de conexión postgresql
-SQLALCHEMY_DATABASE_URL = "postgresql://postgres@localhost/User"
+SQLALCHEMY_DATABASE_URL = "postgresql://postgres:postgres@localhost:5433/db_ferreteria"
 
 # 1. El Engine es el motor que maneja la comunicación con la base de datos
 engine = create_engine(SQLALCHEMY_DATABASE_URL, pool_size=5, max_overflow=10)
@@ -18,6 +18,6 @@ Base = declarative_base()
 def get_db():
     db = SessionLocal()
     try:
-        yield db
+        yield db # pausa la ejecución
     finally:
         db.close()

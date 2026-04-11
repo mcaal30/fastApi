@@ -11,16 +11,17 @@ from app.models import user # Importamos para que SQLAlchemy detecte el modelo
 Base.metadata.create_all(bind=engine)
 # ----------------------------
 
-app = FastAPI(title="API con ORM")
+app = FastAPI(title="API con ORM") #titulo superior
 
+#error cors
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"],
+    allow_headers=["*"], # envio de cookies
 )
-
-app.include_router(users.router, prefix="/api/usuarios", tags=["Usuarios"])
+#Modularidad
+app.include_router(users.router, prefix="/api/usuarios", tags=["Metodos htttp prueba"])
 
 #mejoras

@@ -9,10 +9,10 @@ from app.models.user import User # Importamos el modelo ORM
 
 router = APIRouter()
 
-@router.post("/", response_model=UserResponse)
+@router.post("/", response_model=UserResponse) #decorador @ filtra los datos no deja pasar las contraseña de vuelta como respuesta json
 def create_user(user_in: UserCreate, db: Session = Depends(get_db)):
     # 1. Verificar si el email ya existe
-    usuario_existente = db.query(User).filter(User.email == user_in.email).first()
+    usuario_existente = db.query(User).filter(User.email == user_in.email).first() #Es la condición. Le dice: "Busca donde la columna 'email' de la tabla sea exactamente igual al correo que el usuario acaba de enviar". primer resutlado que encuentre
     if usuario_existente:
         raise HTTPException(status_code=400, detail="El email ya está registrado")
 
@@ -28,7 +28,7 @@ def create_user(user_in: UserCreate, db: Session = Depends(get_db)):
 
     # 4. Guardar en la base de datos a través del ORM
     db.add(nuevo_usuario)
-    db.commit()
+    db.commit() #traducción a codigo sql
     db.refresh(nuevo_usuario) # Refresca el objeto para obtener el ID generado
 
     return nuevo_usuario
